@@ -1,21 +1,15 @@
 package entity;
-import java.util.ArrayList;
 
-public class PlanoEnterprise {
-// Atributos privados (encapsulamento)
+public class PlanoEnterprise extends PlanoPremium {
+    // Atributos privados (encapsulamento)
     private boolean suporte24h; 
     private boolean personalizacao;
 
     // Construtor padrão
     public PlanoEnterprise() {
-        this.suporte24h = false;
-        this.personalizacao = false;
-    }
-
-    // Construtor com parâmetros
-    public PlanoEnterprise(boolean suporte24h, boolean personalizacao) {
-        this.suporte24h = suporte24h;
-        this.personalizacao = personalizacao;
+        super();
+        this.suporte24h = true;
+        this.personalizacao = true;
     }
 
     // Getters e Setters
@@ -36,28 +30,11 @@ public class PlanoEnterprise {
     }
 
     // Método sobrescrito 
+    @Override
     public String listarBeneficios() {
-        ArrayList<String> beneficios = new ArrayList<>();
-
-        beneficios.add("Acesso ilimitado à plataforma");
-        if (suporte24h) {
-            beneficios.add("Suporte técnico 24h");
-        }
-        if (personalizacao) {
-            beneficios.add("Personalização avançada de relatórios");
-        }
-
-        // Junta os benefícios em uma String formatada
-        return String.join(", ", beneficios);
-    }
-
-    // Método main para teste rápido
-    public static void main(String[] args) {
-        PlanoEnterprise plano = new PlanoEnterprise(true, true);
-
-        System.out.println("Suporte 24h: " + plano.isSuporte24h());
-        System.out.println("Personalização: " + plano.isPersonalizacao());
-        System.out.println("Benefícios: " + plano.listarBeneficios());
+        return super.listarBeneficios() + "\n" +
+               "- Suporte 24h: " + (this.suporte24h ? "Disponível" : "Não disponível") + "\n" +
+               "- Personalização: " + (this.personalizacao ? "Disponível" : "Não disponível");
     }
 }
 
