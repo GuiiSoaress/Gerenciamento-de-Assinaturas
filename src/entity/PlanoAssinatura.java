@@ -6,8 +6,11 @@ public class PlanoAssinatura {
     private String metodoPagamento;
 
 
-    public double calcularPrecoAnual(double preco){
-        return preco * 12;
+    public double calcularPrecoAnual(){
+        if((metodoPagamento.toLowerCase()).equals("pix") || (metodoPagamento.toLowerCase()).equals("debito") ){
+            return (this.precoMensal * 12) * 0.9;
+        }
+        return this.precoMensal * 12;
     }
 
     public String getNome() {
