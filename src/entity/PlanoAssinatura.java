@@ -7,7 +7,7 @@ public class PlanoAssinatura {
 
 
     public double calcularPrecoAnual(){
-        if((metodoPagamento.toLowerCase()).equals("pix") || (metodoPagamento.toLowerCase()).equals("debito") ){
+        if(metodoPagamento.equals("pix") || metodoPagamento.equals("debito")){
             return (this.precoMensal * 12) * 0.9;
         }
         return this.precoMensal * 12;
