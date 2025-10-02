@@ -5,6 +5,14 @@ public class PlanoAssinatura {
     private Double precoMensal;
     private String metodoPagamento;
 
+    
+
+
+    public PlanoAssinatura(String nome, String metodoPagamento) {
+        this.nome = nome;
+        this.precoMensal = 50.0;
+        this.metodoPagamento = metodoPagamento;
+    }
 
     public double calcularPrecoAnual(){
         if(metodoPagamento.equals("pix") || metodoPagamento.equals("debito")){

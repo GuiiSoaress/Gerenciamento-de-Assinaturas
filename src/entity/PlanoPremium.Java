@@ -6,8 +6,8 @@ public class PlanoPremium extends PlanoBasico {
     private Boolean acessoOffline;
 
     // constructors
-    public PlanoPremium() {
-        super(); // calls PlanoBasico's constructors
+    public PlanoPremium(String nome, String metodoPagamento) {
+        super(nome, metodoPagamento); 
         this.suportePrioritario = true;
         this.acessoOffline = true;
     }

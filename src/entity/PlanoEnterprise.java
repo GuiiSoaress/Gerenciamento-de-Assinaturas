@@ -6,8 +6,8 @@ public class PlanoEnterprise extends PlanoPremium {
     private boolean personalizacao;
 
     // Construtor padrão
-    public PlanoEnterprise() {
-        super();
+    public PlanoEnterprise(String nome, String metodoPagamento) {
+        super(nome, metodoPagamento);
         this.suporte24h = true;
         this.personalizacao = true;
     }

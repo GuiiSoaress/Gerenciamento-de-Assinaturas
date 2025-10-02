@@ -6,10 +6,10 @@ public class PlanoBasico extends PlanoAssinatura{
     private Integer armazenamento;
 
     //constructors
-    public PlanoBasico(){
-        super();
-        this.limiteUsuarios = 5;
-        this.armazenamento = 50; 
+    public PlanoBasico(String nome, String metodoPagamento) {
+        super(nome, metodoPagamento);
+        this.limiteUsuarios = 3;
+        this.armazenamento = 1;
     }
 
     //getters and setters
