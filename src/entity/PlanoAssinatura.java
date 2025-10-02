@@ -1,26 +1,19 @@
 package entity;
 
 public class PlanoAssinatura {
+    //attributes
     private String nome;
     private Double precoMensal;
     private String metodoPagamento;
 
-    
-
-
-    public PlanoAssinatura(String nome, String metodoPagamento) {
+    //constructors
+    public PlanoAssinatura(String nome, String metodoPagamento, Double precoMensal) {
         this.nome = nome;
-        this.precoMensal = 50.0;
+        this.precoMensal = precoMensal;
         this.metodoPagamento = metodoPagamento;
     }
 
-    public double calcularPrecoAnual(){
-        if(metodoPagamento.equals("pix") || metodoPagamento.equals("debito")){
-            return (this.precoMensal * 12) * 0.9;
-        }
-        return this.precoMensal * 12;
-    }
-
+    //getters and setters
     public String getNome() {
         return nome;
     }
@@ -42,6 +35,14 @@ public class PlanoAssinatura {
 
     public String listarBeneficios() {
        return "";
+    }
+
+    //methods
+    public double calcularPrecoAnual(){
+        if(metodoPagamento.equals("pix") || metodoPagamento.equals("debito")){
+            return (this.precoMensal * 12) * 0.9;
+        }
+        return this.precoMensal * 12;
     }
     
 }

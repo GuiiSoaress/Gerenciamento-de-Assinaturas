@@ -9,17 +9,18 @@ import entity.PlanoPremium;
 public class App {
     private static Scanner scan = new Scanner(System.in);
     private static ArrayList<PlanoAssinatura> planos = new ArrayList<>();
+    private static Double precoB = 50.0;
+    private static Double precoP = 100.0;
+    private static Double precoE = 150.0;
 
     public static void main(String[] args) throws Exception {
-        boolean tenteNovamente = false;
-
-        ArrayList<PlanoAssinatura> assinaturas = new ArrayList<>();
 
         while (true) {
             System.out.println("""
                     -------------------------- Gerenciamento de Assinaturas ---------------------------
                     1 - Novos planos
                     2 - Meus Planos
+                    -----------------------------------------------------------------------------------
                     """);
             String opcao = scan.next();
             scan.nextLine();
@@ -28,6 +29,9 @@ public class App {
                 instanciarPlano();
             }else if (opcao.equals("2")) {
                 listarPlanos();
+            }else{
+                System.out.println("Opção Invalida! Tente novamente!");
+                continue;
             }
 
         }
@@ -94,9 +98,9 @@ public class App {
                 }
 
 
-                if(newPlano.equals("1")){ PlanoBasico plano = new PlanoBasico(nomeUsuario, pag); planos.add(plano); System.out.println("Plano Criado Com sucesso!");}
-                if(newPlano.equals("2")){ PlanoPremium plano = new PlanoPremium(nomeUsuario, pag); planos.add(plano); System.out.println("Plano Criado Com sucesso!");}
-                if(newPlano.equals("3")){ PlanoEnterprise plano = new PlanoEnterprise(nomeUsuario, pag); planos.add(plano); System.out.println("Plano Criado Com sucesso!");}
+                if(newPlano.equals("1")){ PlanoBasico plano = new PlanoBasico(nomeUsuario, pag, precoB); planos.add(plano); System.out.println("Plano Criado Com sucesso!");}
+                if(newPlano.equals("2")){ PlanoPremium plano = new PlanoPremium(nomeUsuario, pag, precoP); planos.add(plano); System.out.println("Plano Criado Com sucesso!");}
+                if(newPlano.equals("3")){ PlanoEnterprise plano = new PlanoEnterprise(nomeUsuario, pag, precoE); planos.add(plano); System.out.println("Plano Criado Com sucesso!");}
                 break;
                 
             }else{ System.out.println("Caracter Invalido! Tente Novamente");}
@@ -106,6 +110,7 @@ public class App {
     }
 
    public static void listarPlanos() {
+
     if (planos.isEmpty()) {
         System.out.println("Você ainda não possui nenhum plano cadastrado!");
         return;
@@ -155,6 +160,7 @@ public class App {
             System.out.println("3 - Listar Benefícios");
             System.out.println("4 - Editar Nome");
             System.out.println("5 - Editar Forma de Pagamento");
+            System.out.println("6 - Preço Anual");
             System.out.println("0 - Voltar");
             System.out.println("-----------------------------------------");
             System.out.print("Escolha uma opção: ");
@@ -165,31 +171,34 @@ public class App {
             if (escolha.equals("0")) {
                 break;
             } else if (escolha.equals("1")) {
-
-                if (planoSelecionado instanceof PlanoBasico) {
-                    PlanoPremium plano = new PlanoPremium(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
-                    System.out.println("Upgrade realizado: Básico => Premium");
-                    if (plano != null) {
-                    planos.remove(indicePlano);
-                    planos.add(indicePlano, plano);
-                    planoSelecionado = plano;
+                if (planoSelecionado instanceof PlanoEnterprise) {
+                    System.out.println("Este plano já é Enterprise. Não é possível fazer upgrade.");
                 }
-                } else if (planoSelecionado instanceof PlanoPremium) {
-                    PlanoEnterprise plano = new PlanoEnterprise(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
+                else if (planoSelecionado instanceof PlanoPremium) {
+                    PlanoEnterprise plano = new PlanoEnterprise(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento(), precoE);
                     System.out.println("Upgrade realizado: Premium => Enterprise");
                     if (plano != null) {
                     planos.remove(indicePlano);
                     planos.add(indicePlano, plano);
                     planoSelecionado = plano;
+                    }
                 }
-                } else if (planoSelecionado instanceof PlanoEnterprise) {
-                    System.out.println("Este plano já é Enterprise. Não é possível fazer upgrade.");
-                }
+                else if (planoSelecionado instanceof PlanoBasico) {
+                    PlanoPremium plano = new PlanoPremium(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento(), precoP);
+                    System.out.println("Upgrade realizado: Básico => Premium");
+                    if (plano != null) {
+                    planos.remove(indicePlano);
+                    planos.add(indicePlano, plano);
+                    planoSelecionado = plano;
+                    }
+                } 
+            }
+        
 
-            } else if (escolha.equals("2")) {
+            else if (escolha.equals("2")) {
 
                 if (planoSelecionado instanceof PlanoEnterprise) {
-                    PlanoPremium plano = new PlanoPremium(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
+                    PlanoPremium plano = new PlanoPremium(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento(), precoP);
                     System.out.println("Downgrade realizado: Enterprise => Premium");
                     if (plano != null) {
                     planos.remove(indicePlano);
@@ -197,7 +206,7 @@ public class App {
                     planoSelecionado = plano;
                 }
                 } else if (planoSelecionado instanceof PlanoPremium) {
-                    PlanoBasico plano = new PlanoBasico(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
+                    PlanoBasico plano = new PlanoBasico(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento(), precoB);
                     System.out.println("Downgrade realizado: Premium => Básico");
                     if (plano != null) {
                     planos.remove(indicePlano);
@@ -244,7 +253,11 @@ public class App {
                     continue;
                 }
                 System.out.println("Forma de pagamento atualizada com sucesso!");
-            } else {
+            }else if (escolha.equals("6"))
+            System.out.println("Preço anual do plano: "+ planoSelecionado.calcularPrecoAnual());
+            
+            
+            else {
                 System.out.println("Opção inválida! Tente novamente.");
             }
         }
