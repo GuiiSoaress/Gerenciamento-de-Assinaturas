@@ -25,7 +25,7 @@ public class App {
                     2 - Meus Planos
                     """);
             String gerenciamento = scan.next();
-            String limpaCache = scan.nextLine();
+            scan.nextLine();
 
             if (gerenciamento.equals("1")) {
                 System.out.println("=========================================");
