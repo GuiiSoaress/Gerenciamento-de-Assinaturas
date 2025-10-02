@@ -39,5 +39,9 @@ public class PlanoAssinatura {
     public void setMetodoPagamento(String metodoPagamento) {
         this.metodoPagamento = metodoPagamento;
     }
+
+    public String listarBeneficios() {
+       return "";
+    }
     
 }

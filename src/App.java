@@ -105,14 +105,152 @@ public class App {
 
     }
 
-    public static void listarPlanos(){
+   public static void listarPlanos() {
+    if (planos.isEmpty()) {
+        System.out.println("Você ainda não possui nenhum plano cadastrado!");
+        return;
+    }
+
+    while (true) {
+        System.out.println("=========================================");
+        System.out.println("           SEUS PLANOS CADASTRADOS       ");
+        System.out.println("=========================================");
+
         for (int i = 0; i < planos.size(); i++) {
             PlanoAssinatura plano = planos.get(i);
-            System.out.println("----------------------------------------");
-            System.out.println((i + 1) + " -- Cliente: " + plano.getNome() +" | Tipo de Plano: " + plano.getClass().getSimpleName());
+            System.out.println((i + 1) + " - Cliente: " + plano.getNome() +
+                    " | Tipo de Plano: " + plano.getClass().getSimpleName());
+        }
+        System.out.println("0 - Voltar");
+        System.out.println("-----------------------------------------");
+        System.out.print("Selecione um plano para gerenciar: ");
+
+        String opcao = scan.next();
+        scan.nextLine();
+
+        if (opcao.equals("0")) {
+            break;
         }
 
+        if (!opcao.matches("\\d+")) {
+            System.out.println("Opção inválida! Tente novamente.");
+            continue;
+        }
+
+        int indicePlano = Integer.parseInt(opcao) - 1;
+
+        if (indicePlano < 0 || indicePlano >= planos.size()) {
+            System.out.println("Opção inválida! Tente novamente.");
+            continue;
+        }
+
+        PlanoAssinatura planoSelecionado = planos.get(indicePlano);
+
+        while (true) {
+            System.out.println("=========================================");
+            System.out.println("      GERENCIAR PLANO DE " + planoSelecionado.getNome());
+            System.out.println("=========================================");
+            System.out.println("1 - Upgrade de Plano");
+            System.out.println("2 - Downgrade de Plano");
+            System.out.println("3 - Listar Benefícios");
+            System.out.println("4 - Editar Nome");
+            System.out.println("5 - Editar Forma de Pagamento");
+            System.out.println("0 - Voltar");
+            System.out.println("-----------------------------------------");
+            System.out.print("Escolha uma opção: ");
+
+            String escolha = scan.next();
+            scan.nextLine();
+
+            if (escolha.equals("0")) {
+                break;
+            } else if (escolha.equals("1")) {
+
+                if (planoSelecionado instanceof PlanoBasico) {
+                    PlanoPremium plano = new PlanoPremium(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
+                    System.out.println("Upgrade realizado: Básico => Premium");
+                    if (plano != null) {
+                    planos.remove(indicePlano);
+                    planos.add(indicePlano, plano);
+                    planoSelecionado = plano;
+                }
+                } else if (planoSelecionado instanceof PlanoPremium) {
+                    PlanoEnterprise plano = new PlanoEnterprise(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
+                    System.out.println("Upgrade realizado: Premium => Enterprise");
+                    if (plano != null) {
+                    planos.remove(indicePlano);
+                    planos.add(indicePlano, plano);
+                    planoSelecionado = plano;
+                }
+                } else if (planoSelecionado instanceof PlanoEnterprise) {
+                    System.out.println("Este plano já é Enterprise. Não é possível fazer upgrade.");
+                }
+
+            } else if (escolha.equals("2")) {
+
+                if (planoSelecionado instanceof PlanoEnterprise) {
+                    PlanoPremium plano = new PlanoPremium(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
+                    System.out.println("Downgrade realizado: Enterprise => Premium");
+                    if (plano != null) {
+                    planos.remove(indicePlano);
+                    planos.add(indicePlano, plano);
+                    planoSelecionado = plano;
+                }
+                } else if (planoSelecionado instanceof PlanoPremium) {
+                    PlanoBasico plano = new PlanoBasico(planoSelecionado.getNome(), planoSelecionado.getMetodoPagamento());
+                    System.out.println("Downgrade realizado: Premium => Básico");
+                    if (plano != null) {
+                    planos.remove(indicePlano);
+                    planos.add(indicePlano, plano);
+                    planoSelecionado = plano;
+                }
+                } else if (planoSelecionado instanceof PlanoBasico) {
+                    System.out.println("Este plano já é Básico. Não é possível fazer downgrade.");
+                }
+            }
+            else if (escolha.equals("3")) {
+                System.out.println("----------------------------------------");
+                System.out.println("Cliente: " + planoSelecionado.getNome());
+                System.out.println("Tipo de pano: " + planoSelecionado.getClass().getSimpleName()); 
+                System.out.printf("Preço Mensal: R$ %.2f\n", planoSelecionado.getPrecoMensal());
+                System.out.println("Método de Pagamento: " + planoSelecionado.getMetodoPagamento());
+                System.out.println("Benefícios:");
+                System.out.println(planoSelecionado.listarBeneficios());
+        
+            } else if (escolha.equals("4")) {
+                System.out.print("Digite o novo nome: ");
+                String novoNome = scan.nextLine();
+                planoSelecionado.setNome(novoNome);
+                System.out.println("Nome atualizado com sucesso!");
+                
+            } else if (escolha.equals("5")) {
+                System.out.println("""
+                        Escolha a nova forma de pagamento:
+                        1 - Pix
+                        2 - Débito
+                        3 - Crédito
+                        """);
+                String novaPag = scan.next();
+                scan.nextLine();
+
+                if (novaPag.equals("1")) {
+                    planoSelecionado.setMetodoPagamento("Pix");
+                } else if (novaPag.equals("2")) {
+                    planoSelecionado.setMetodoPagamento("Débito");
+                } else if (novaPag.equals("3")) {
+                    planoSelecionado.setMetodoPagamento("Crédito");
+                } else {
+                    System.out.println("Opção inválida! Tente novamente.");
+                    continue;
+                }
+                System.out.println("Forma de pagamento atualizada com sucesso!");
+            } else {
+                System.out.println("Opção inválida! Tente novamente.");
+            }
+        }
     }
+}
+
         
         
         

@@ -30,7 +30,8 @@ public class PlanoBasico extends PlanoAssinatura{
     }
     
 
-    //methods 
+    //methods \
+    @Override
     public String listarBeneficios(){
         return "Beneficios plano Basico: \n" +
                "- Limite de usuarios: " + this.limiteUsuarios + "\n" +
